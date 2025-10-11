@@ -9,6 +9,7 @@ NOTE=".note.xnote"
 check_if_repo() {
     if [ ! -d ".git" ]; then
         echo "xnote must be run at the root of a git repository!"
+        exit 1
     fi
 }
 
