@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+NOTE=".note.xnote"
+
+check_if_repo() {
+    if [ ! -d ".git" ]; then
+        echo "xnote must be run at the root of a git repository!"
+    fi
+}
+
+check_if_note_ignored_by_vc() {
+    if [ -f ".gitignore" ]; then
+        if ! grep -q "$NOTE" .gitignore; then
+            echo "$NOTE" >> .gitignore
+        fi
+    fi
+
+    if [ -f ".dockerignore" ]; then
+        if ! grep -q "$NOTE" .dockerignore; then
+            echo "$NOTE" >> .dockerignore
+        fi
+    fi
+}
+
+handle_note() {
+    if [ -f "$NOTE" ]; then
+        echo "A $NOTE file already exists. What would you like to do?"
+        select choice in "Read" "Write New" "Exit"; do
+            case $choice in
+                Read ) display_note; break;;
+                "Write New" ) write_new; break;;
+                Exit ) echo -e "${RED}Exiting...${NC}"; exit 0;;
+            esac
+        done
+    else
+        echo "No $NOTE file found. What would you like to do?"
+        select choice in "Write New" "Exit"; do
+            case $choice in
+                "Write New" ) write_new; break;;
+                Exit ) echo -e "${RED}Exiting...${NC}"; exit 0;;
+            esac
+        done
+    fi
+}
+
+display_note() {
+    echo -e "${BLUE}Displaying $NOTE...${NC}"
+    cat "$NOTE"
+}
+
+write_new() {
+    echo -e "${BLUE}Writing new $NOTE...${NC}"
+    ${EDITOR:-vi} "$NOTE"
+}
+
+main() {
+    check_if_repo
+    check_if_note_ignored_by_vc
+    handle_note
+}
+
+main
