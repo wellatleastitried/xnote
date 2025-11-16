@@ -30,7 +30,7 @@ check_if_note_ignored_by_vc() {
 handle_note() {
     if [ -f "$NOTE" ]; then
         echo "A $NOTE file already exists. What would you like to do?"
-        select choice in "Read" "Write New" "Exit"; do
+        select choice in "Read" "Write" "Exit"; do
             case $choice in
                 Read ) display_note; break;;
                 Write ) write_new; break;;
@@ -39,7 +39,7 @@ handle_note() {
         done
     else
         echo "No $NOTE file found. What would you like to do?"
-        select choice in "Write New" "Exit"; do
+        select choice in "Write" "Exit"; do
             case $choice in
                 Write ) write_new; break;;
                 Exit ) echo -e "${RED}Exiting...${NC}"; exit 0;;
