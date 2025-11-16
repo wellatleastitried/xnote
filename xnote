@@ -33,7 +33,7 @@ handle_note() {
         select choice in "Read" "Write New" "Exit"; do
             case $choice in
                 Read ) display_note; break;;
-                "Write New" ) write_new; break;;
+                Write ) write_new; break;;
                 Exit ) echo -e "${RED}Exiting...${NC}"; exit 0;;
             esac
         done
@@ -41,7 +41,7 @@ handle_note() {
         echo "No $NOTE file found. What would you like to do?"
         select choice in "Write New" "Exit"; do
             case $choice in
-                "Write New" ) write_new; break;;
+                Write ) write_new; break;;
                 Exit ) echo -e "${RED}Exiting...${NC}"; exit 0;;
             esac
         done
